@@ -1,0 +1,141 @@
+{% extends 'welcome/layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>1. Go to dashbaord</h3>
+            <p>Once your application has been deployed to bluemix go to Dashboard.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-1.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>2. Go to Kinetise settings</h3>
+            <p>On the dashboard page search for Kinetise Service and open it.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-2.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>3. Go to Kinetise dashboard</h3>
+            <p>To create your mobile app you need to open Kinetise</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-3.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>4. Create your first application</h3>
+            <p>Click any "Create App" button.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-4.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>5. Start editing your application</h3>
+            <p>To start working with the application close the welcome screen.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-5.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>6. Open Data tab</h3>
+            <p>Data tab contains everything you need to fill your app with data.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-6.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>7. Start editing the backend</h3>
+            <p>Familiarize yourself with the concept of Kinetise Backend Editor</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-7.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>8. Expand 'more actions'</h3>
+            <p>There are many cool features in more actions besides the obvious adding rows and columns</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-8.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>9. Go to Custom Logic</h3>
+            <p>Even the simplest application sometimes needs custom logic to make everything fit in place.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-9.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>10. Add endpoint customization</h3>
+            <p>Normally Kinetise Backend returns exactly what you see in the table. You can customize it by adding endpoint customizations</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-10.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>11. Customize Sample table</h3>
+            <p>Select <strong>sample</strong> from <strong>Table</strong> options, <strong>get-table</strong> from <strong>Endpoint</strong> and <strong>format_data</strong> from <strong>Type</strong>. Provide this URL: <strong>{{ url('api_sample_getHook') }}</strong> and click <strong>Add</strong> button.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-11.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>12. Go to sample table</h3>
+            <p>Once everything is in place you can go back to sample table by expanding hamburger button, data and selecting <strong>sample</strong> table.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-12.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>13. Open endpoints</h3>
+            <p>Here are the endpoints that can be used by Kinetise application.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-13.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h2>14. Copy Get feed endpoint</h2>
+            <p><strong>Get feed</strong> endpoint returns data from selected table.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-14.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>15. Drag and drop DataFeed widget to the phone</h3>
+            <p>DataFeed widget is a dynamic widget that loads data in form of JSON or XML from the internet.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-15.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>16. Paste endpoint url into the DataFeed</h3>
+            <p>By default DataFeed widget loads data from static XML, let's change it to recently copied <strong>Get Feed</strong> endpoint for <strong>sample</strong> table.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-16.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>17. Select text to edit it</h3>
+            <p>Click on text widget to edit it. On the right side there's a dropdown with table columns.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-17.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>18. Select <strong>custom_hook</strong> from the dropdown</h3>
+            <p>As you remember sample table consisted of title, description, image. Our custom endpoint has dynamically updated sample table with additional column called <strong>custom_hook</strong></p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-18.png" class="img-thumbnail"/>
+                </div>
+            </div>
+            <h3>19. Take a look at the emulator</h3>
+            <p>The data is displayed now in the emulator. The application now downloads and displays information from <strong>sample</strong> table, but it is modified by your custom endpoint deployed to <strong>Bluemix</strong>. You can customize the code and check the results live here in the emulator.</p>
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="/img/bluemix-tutorial-19.png" class="img-thumbnail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

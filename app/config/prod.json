@@ -1,0 +1,23 @@
+{
+  "app.rootDir" : "%app.rootDir%",
+  "app.cacheDir" : "%app.rootDir%/var/cache",
+  "app.logsDir" : "%app.rootDir%/var/logs",
+  "profiler.cache_dir" : "%app.rootDir%/var/cache/profiler",
+  "orm.proxies_dir" : "%app.rootDir%/src/KinetiseSkeleton/Doctrine/Proxy",
+  "orm.auto_generate_proxies" : true,
+  "orm.em.options" : {
+    "mappings" : [
+      {
+        "type" : "annotation",
+        "namespace" : "KinetiseSkeleton\\Doctrine\\Entity",
+        "path" : "%app.rootDir%/src/KinetiseSkeleton/Doctrine/Entity",
+        "use_simple_annotation_reader" : false
+      }
+    ]
+  },
+  "monolog.logfile" : "%app.rootDir%/var/logs/prod.log",
+  "twig.path" : "%app.rootDir%/templates",
+  "twig.options" : {
+    "cache" : "%app.rootDir%/var/cache/twig"
+  }
+}

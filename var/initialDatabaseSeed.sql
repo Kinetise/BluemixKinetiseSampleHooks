@@ -1,0 +1,10 @@
+INSERT INTO `sample_data` (`description`) VALUES('This is first row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is second row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is third row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is fourth row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is fifth row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is sixth row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is seventh row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is eighth row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is ninth row in ClearDb');
+INSERT INTO `sample_data` (`description`) VALUES('This is tenth row in ClearDb');

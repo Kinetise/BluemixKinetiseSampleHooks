@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+set_time_limit(0);
+
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+
+defined('APP_PATH') || define('APP_PATH', realpath(dirname(__FILE__) . '/../'));
+
+defined('APP_ENV') || define(
+    'APP_ENV',
+    $input->getParameterOption(array('--env', '-e'), getenv('APP_ENV') ?: 'dev')
+);
+
+// Define application environment
+defined('APP_DEBUG') || define(
+    'APP_DEBUG',
+    $input->getParameterOption(array('--debug', '-d'), (bool) getenv('APP_DEBUG') ?: true)
+);
+
+$app = require __DIR__.'/kernel.php';
+
+$console = require_once $app['app.rootDir'] . '/src/console.php';
+$console->run();

@@ -1,0 +1,41 @@
+{% extends 'tutorial/layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h1>What included?</h1>
+
+            <p>This skeleton backend is based on <a href="http://silex.sensiolabs.org/" target="_blank">Silex Framework</a>.</p>
+
+            <h2>Providers</h2>
+
+            <p>Pre defined configuration includes:</p>
+            <ul>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/url_generator.html" target="_blank">UrlGeneratorServiceProvider</a></li>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/service_controller.html" target="_blank">ServiceControllerServiceProvider</a></li>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/twig.html" target="_blank">TwigServiceProvider</a></li>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/http_fragment.html" target="_blank">HttpFragmentServiceProvider</a></li>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/doctrine.html" target="_blank">DoctrineServiceProvider</a></li>
+                <li><a href="http://silex.sensiolabs.org/doc/providers/monolog.html" target="_blank">MonologServiceProvider</a></li>
+            </ul>
+
+            <p>3rd party providers:</p>
+            <ul>
+                <li><a href="https://github.com/dflydev/dflydev-doctrine-orm-service-provider/tree/v1.0.7" target="_blank">DoctrineOrmServiceProvider</a></li>
+            </ul>
+
+            <h3>Skeleton custom provider</h3>
+
+            <p>This skeleton also includes custom provider for organize application controller and other.</p>
+            <pre>path/to/install/src/KinetiseSkeleton/Provider/ServiceProvider.php</pre>
+
+            <h2>Libraries</h2>
+            <ul>
+                <li><a href="http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/" target="_blank">Doctrine DBAL</a> - communication with DataBase</li>
+                <li><a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/" target="_blank">Doctrine ORM</a> - mapping object to database tables</li>
+                <li><a href="http://jmsyst.com/libs/serializer" target="_blank">JMS Serializer</a> - serialize objects to XML or JSON</li>
+                <li><a href="https://github.com/Seldaek/monolog" target="_blank">Monolog</a> - writing logs</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

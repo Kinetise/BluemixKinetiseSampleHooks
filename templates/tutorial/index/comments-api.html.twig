@@ -1,0 +1,80 @@
+{% extends 'tutorial/layout.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h1>Comments Api</h1>
+
+        <p>This skeleton include BASIC CRUD Rest Api for comments.</p>
+
+        <h2>Controller</h2>
+        <pre>path/to/install/src/KinetiseSkeleton/Controller/Api/CommentsController.php</pre>
+
+        <h3>Web services:</h3>
+        <ul>
+            <li><kbd>GET /api/comments</kbd> <code>CommentsController::getAction</code> - list of comments</li>
+            <li><kbd>POST /api/comments</kbd> <code>CommentsController::addAction</code> - add comment</li>
+            <li><kbd>GET /api/comments/[id]</kbd> <code>CommentsController::commentAction</code> - get specific comment</li>
+            <li><kbd>POST /api/comments/[id]/delete</kbd> <code>CommentsController::deleteAction</code> - delete specific comment</li>
+        </ul>
+
+        <h3>Entities</h3>
+        <ul>
+            <li>
+                <kbd>Comment</kbd> <code>path/to/install/src/KinetiseSkeleton/Doctrine/Entity/Comment.php</code>
+                <ul>
+                    <p>Fields:</p>
+                    <li><kbd>id</kbd> - integer</li>
+                    <li><kbd>author</kbd> - string</li>
+                    <li><kbd>message</kbd> - string</li>
+                    <li><kbd>pubDate</kbd> - <a href="http://php.net/manual/en/class.datetime.php" target="_blank">DateTime</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>Testing web services</h2>
+
+        <h3>Adding comment</h3>
+
+        <p><kbd>POST</kbd> /api/comments</p>
+        <p>Request params:</p>
+        <ul>
+            <li>author</li>
+            <li>message</li>
+        </ul>
+
+        <p>From kinetise POST data is sent as a json payload:</p>
+        <pre>
+{
+    "items":[
+        {
+            "alterapicontext":null,
+            "form":{
+                "author":"John Doe",
+                "message":"Next comment"
+            }
+        }
+    ]
+}
+        </pre>
+
+        <h3>Get comments</h3>
+
+        <p><kbd>GET</kbd> /api/comments</p>
+
+        <p>Example response body:</p>
+        <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rss xmlns:k="http://kinetise.com"&gt;
+    &lt;channel&gt;
+        &lt;item k:context="1"&gt;
+            &lt;author&gt;&lt;![CDATA[John Doe]]&gt;&lt;/author&gt;
+            &lt;message&gt;&lt;![CDATA[Next comment]]&gt;&lt;/message&gt;
+            &lt;pub_date&gt;&lt;![CDATA[Wed, 16 Sep 2015 11:41:23 +0000]]&gt;&lt;/pub_date&gt;
+        &lt;/item&gt;
+    &lt;/channel&gt;
+&lt;/rss&gt;
+        </pre>
+    </div>
+</div>
+{% endblock %}

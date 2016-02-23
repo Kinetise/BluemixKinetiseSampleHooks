@@ -1,0 +1,89 @@
+{% extends 'tutorial/layout.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h1>Welcome</h1>
+        <p>Welcome to Alterapi Skeleton - a base backend source for <a href="https://www.kinetise.com/" target="_blank">Kinetise</a> apps.</p>
+
+        <h2>Requirements</h2>
+
+        <ul>
+            <li>PHP >= 5.4.0</li>
+            <li>SQLite</li>
+            <li>Apache</li>
+        </ul>
+
+        <h2>How to start?</h2>
+
+        <p>AlterApi Skeleton uses <a href="https://getcomposer.org/" target="_blank">Composer</a> to ease the creation of a new project:</p>
+
+        <pre>$ composer create-project kinetise/alterapi-skeleton path/to/install -s dev</pre>
+
+        <p>Composer will create for you a new project under path/to/install</p>
+
+        <p>Next you need to setup a Apache Virtual host pointing to path/to/install/web</p>
+
+        <pre>
+&lt;VirtualHost *:80&gt;
+    ServerName alterapi.skeleton.dev
+
+    ## Vhost docroot
+    DocumentRoot "path/to/install/web"
+
+    ## Directories, there should at least be a declaration for path/to/install/web
+
+    &lt;Directory "path/to/install/web">
+    Options Indexes MultiViews FollowSymLinks
+    AllowOverride All
+    Require all granted
+
+    &lt;IfModule mod_rewrite.c&gt;
+        Options -MultiViews
+
+        RewriteEngine On
+        #RewriteBase /path/to/app
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [QSA,L]
+    &lt;/IfModule&gt;
+
+    &lt;/Directory&gt;
+
+    ## Logging
+    ErrorLog "/var/log/apache2/alterapi.skeleton.error.log"
+    ServerSignature Off
+    CustomLog "/var/log/apache2/alterapi.skeleton.access.log" combined
+
+    ## Custom fragment
+    SetEnv APP_ENV dev
+    SetEnv APP_DEBUG true
+
+&lt;/VirtualHost&gt;
+        </pre>
+
+        <p>Base backend collect logs and create some cache files. You need to create a directories for logs and cache files:</p>
+
+        <pre>
+$ cd path/to/install
+$ mkdir -p var/{cache,logs}
+        </pre>
+
+        <p>Your apache user must have permissions to write files under "var" directory.</p>
+
+        <p>Last step is creating SQLite database:</p>
+
+        <pre>
+$ cd path/to/install
+$ php app/console orm:schema-tool:create
+        </pre>
+
+        <p>For more information you can browse tutorial included inside:</p>
+
+        <pre>
+http://alterapi.skeleton.dev/tutorial
+        </pre>
+
+        <p>Enjoy!</p>
+    </div>
+</div>
+{% endblock %}

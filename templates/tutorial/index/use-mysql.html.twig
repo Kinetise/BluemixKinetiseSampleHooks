@@ -1,0 +1,54 @@
+{% extends 'tutorial/layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h1>Use MySQL</h1>
+        </div>
+    </div>
+
+    <p>First edit config file</p>
+    <pre>
+/** path/to/install/app/config/dev.json **/
+
+{
+  // ..
+  "db.options" : {
+    "driver" : "pod_mysql",
+    "dbname" : "##",
+    "host" : "##",
+    "user" : "##",
+    "password" : "##",
+    "charset" : "##",
+    "port" : "##"
+  },
+  // ..
+}
+    </pre>
+
+    <pre>
+/** path/to/install/app/config/prod.json **/
+
+{
+  // ..
+  "db.options" : {
+    "driver" : "pod_mysql",
+    "dbname" : "##",
+    "host" : "##",
+    "user" : "##",
+    "password" : "##",
+    "charset" : "##",
+    "port" : "##"
+  },
+  // ..
+}
+    </pre>
+
+    <p>Replace <code>##</code> with correct values and create MySQL database.</p>
+
+    <p>Update MySQL schema with mapping from entities.</p>
+    <pre>
+$ cd path/to/install
+$ php app/console orm:schema-tool:update --force
+    </pre>
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'tutorial/layout.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h1>New web service</h1>
+
+        <h2>Create Model</h2>
+        <pre>
+/** path/to/install/src/KinetiseSkeleton/Doctrine/Entity/Post.php **/
+
+&lt;?php
+
+namespace KinetiseSkeleton\Doctrine\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+
+/**
+ * Class Post
+ * @package KinetiseSkeleton\Entity
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="posts")
+ * @ORM\HasLifecycleCallbacks
+ * @JMS\ExclusionPolicy("all")
+ */
+class Post
+{
+    /**
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     * @JMS\Expose()
+     */
+    private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     * @JMS\Expose()
+     */
+    private $body;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", name="pub_date")
+     * @JMS\Type("DateTime<'D, d M Y H:i:s O'>")
+     * @JMS\Expose()
+     */
+    private $pubDate;
+
+    /**
+     * @return array
+     * @JMS\XmlAttributeMap
+     * @JMS\VirtualProperty
+     */
+    public function getItemAttributes()
+    {
+        return array(
+            'k:context' => $this->id
+        );
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        if (!$this->pubDate) {
+            $this->pubDate = new \DateTime();
+        }
+    }
+}
+
+        </pre>
+
+        <p>Generate methods:</p>
+        <pre>
+$ cd path/to/install
+$ php app/console orm:generate-entities --generate-methods=true --filter=Post ./src
+        </pre>
+
+        <p>And update database schema:</p>
+        <pre>
+$ php app/console orm:schema-tool:update --force
+        </pre>
+
+        <h2>Create controller</h2>
+        <h3>PostsController.php</h3>
+        <pre>
+/** path/to/install/src/KinetiseSkeleton/Controller/Api/PostsController.php **/
+
+&lt;?php
+
+namespace KinetiseSkeleton\Controller\Api;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\SerializationContext;
+use KinetiseSkeleton\Controller\AbstractController;
+use KinetiseSkeleton\Doctrine\Entity\Post;
+use KinetiseSkeleton\Response\MessageResponse;
+use KinetiseSkeleton\Response\Model\Rss;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+class PostsController extends AbstractController
+{
+    public function getAction()
+    {
+        $comments = $this
+            ->getEntityManager()
+            ->getRepository('KinetiseSkeleton\Doctrine\Entity\Post')
+            ->findAll();
+
+        return new Response(
+            $this->getSerializer()->serialize(
+                new Rss(new ArrayCollection($comments)),
+                'xml',
+                SerializationContext::create()->setSerializeNull(true)
+            ),
+            Response::HTTP_OK,
+            array(
+                'Content-Type' => 'application/xml; charset=utf-8'
+            )
+        );
+    }
+
+    public function postAction($id)
+    {
+        $post = $this
+            ->getEntityManager()
+            ->find('KinetiseSkeleton\Doctrine\Entity\Post', $id)
+        ;
+
+        if (!$post) {
+            return new MessageResponse('Post not found!', array(), Response::HTTP_BAD_REQUEST, array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            ));
+        }
+
+        return new Response(
+            $this->getSerializer()->serialize(
+                new Rss(new ArrayCollection(array($post))),
+                'xml',
+                SerializationContext::create()->setSerializeNull(true)
+            ),
+            Response::HTTP_OK,
+            array(
+                'Content-Type' => 'application/xml; charset=utf-8'
+            )
+        );
+    }
+
+    public function addAction(Request $request)
+    {
+        $json = $request->request->get('_json', array());
+
+        if (!array_key_exists('items', $json) || !array_key_exists('form', $json['items'][0])) {
+            return new MessageResponse('Bad Request', array(), Response::HTTP_BAD_REQUEST, array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            ));
+        }
+
+        $data = $json['items'][0]['form'];
+
+        if (!array_key_exists('title', $data) || !array_key_exists('body', $data)) {
+            return new MessageResponse('Data missing', array(), Response::HTTP_BAD_REQUEST, array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            ));
+        }
+
+        $post = new Post();
+        $post->setTitle(trim($data['title']));
+        $post->setBody(trim($data['body']));
+
+        $this->getEntityManager()->persist($post);
+        $this->getEntityManager()->flush();
+
+        return new MessageResponse(
+            null,
+            array(
+                $this->getUrlGenerator()->generate('api_posts', array(), UrlGeneratorInterface::ABSOLUTE_URL)
+            ),
+            Response::HTTP_OK,
+            array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            )
+        );
+    }
+
+    public function deleteAction($id)
+    {
+        $em = $this->getEntityManager();
+
+        $comment = $em->find('KinetiseSkeleton\Doctrine\Entity\Comment', $id);
+
+        if (!$comment) {
+            return new MessageResponse('Comment not found!', array(), Response::HTTP_BAD_REQUEST, array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            ));
+        }
+
+        $em->remove($comment);
+        $em->flush();
+
+        return new MessageResponse(
+            null,
+            array(
+                $this->getUrlGenerator()->generate('api_comments', array(), UrlGeneratorInterface::ABSOLUTE_URL)
+            ),
+            Response::HTTP_OK,
+            array(
+                'Content-Type' => 'application/xml, charset=UTF-8'
+            )
+        );
+    }
+}
+        </pre>
+
+        <h3>Register controller</h3>
+        <pre>
+/** path/to/install/src/KinetiseSkeleton/Provider/ServiceProvider.php **/
+
+// ..
+use KinetiseSkeleton\Controller\Api\PostsController;
+
+// ..
+public function register(Application $app)
+{
+    // ..
+
+    $app['controllers.api.posts'] = $app->share(function() use ($app) {
+        return new PostsController($app);
+    });
+}
+//..
+public function boot(Application $app)
+{
+    // ..
+
+    $api->get('/posts', 'controllers.api.posts:getAction')->bind('api_posts');
+    $api->post('/posts', 'controllers.api.posts:addAction')->bind('api_posts_add');
+
+    $api
+        ->get('/posts/{id}', 'controllers.api.posts:commentAction')
+        ->assert('id', '\d+')
+        ->bind('api_comment');
+
+    $api
+        ->post('/posts/{id}/delete', 'controllers.api.posts:deleteAction')
+        ->assert('id', '\d+')
+        ->bind('api_post_delete');
+
+    // ..
+}
+        </pre>
+
+        <h3>Web services:</h3>
+        <ul>
+            <li><kbd>GET /api/posts</kbd> <code>PostsController::getAction</code> - list of posts</li>
+            <li><kbd>POST /api/posts</kbd> <code>PostsController::addAction</code> - add post</li>
+            <li><kbd>GET /api/posts/[id]</kbd> <code>PostsController::commentAction</code> - get specific post</li>
+            <li><kbd>POST /api/posts/[id]/delete</kbd> <code>PostsController::deleteAction</code> - delete specific post</li>
+        </ul>
+
+        <h3>Testing web services</h3>
+
+        <h4>Adding post</h4>
+
+        <p><kbd>POST</kbd> /api/post</p>
+        <p>Request params:</p>
+        <ul>
+            <li>title</li>
+            <li>body</li>
+        </ul>
+
+        <p>From kinetise POST data is sent as a json payload:</p>
+        <pre>
+{
+    "items":[
+        {
+            "alterapicontext":null,
+            "form":{
+                "title":"Sample post",
+                "body":"Sample body"
+            }
+        }
+    ]
+}
+        </pre>
+
+        <h4>Get posts</h4>
+
+        <p><kbd>GET</kbd> /api/posts</p>
+
+        <p>Example response body:</p>
+        <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rss xmlns:k="http://kinetise.com"&gt;
+    &lt;channel&gt;
+        &lt;item k:context="1"&gt;
+            &lt;author&gt;&lt;![CDATA[Sample post]]&gt;&lt;/author&gt;
+            &lt;message&gt;&lt;![CDATA[Sample body]]&gt;&lt;/message&gt;
+            &lt;pub_date&gt;&lt;![CDATA[Wed, 16 Sep 2015 11:41:23 +0000]]&gt;&lt;/pub_date&gt;
+        &lt;/item&gt;
+    &lt;/channel&gt;
+&lt;/rss&gt;
+        </pre>
+    </div>
+</div>
+{% endblock %}
